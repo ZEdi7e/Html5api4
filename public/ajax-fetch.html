@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AJAX и Fetch API</title>
+</head>
+<body>
+  <h1>Загрузка данных с Fake API через Fetch</h1>
+
+  <button id="load-users">Загрузить пользователей</button>
+  <button id="load-posts">Загрузить посты</button>
+
+  <div id="content"></div>
+
+  <script>
+    const loadData = async (url) => {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        displayData(data);
+      } catch (error) {
+        alert('Ошибка при загрузке данных');
+      }
+    };
+
+    const displayData = (data) => {
+      const contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = '<ul>' + data.map(item => `<li>${JSON.stringify(item)}</li>`).join('') + '</ul>';
+    };
+
+    document.getElementById('load-users').addEventListener('click', () => loadData('https://jsonplaceholder.typicode.com/users'));
+    document.getElementById('load-posts').addEventListener('click', () => loadData('https://jsonplaceholder.typicode.com/posts'));
+  </script>
+</body>
+</html>

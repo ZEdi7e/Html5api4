@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чат с WebSocket</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Чат в реальном времени</h1>
+  
+  <input id="message-input" type="text" placeholder="Введите сообщение">
+  <button id="send-message">Отправить</button>
+
+  <div id="chat-box"></div>
+
+  <script>
+    const socket = io(); // подключение к WebSocket серверу
+
+    const sendMessage = () => {
+      const message = document.getElementById('message-input').value;
+      socket.emit('sendMessage', message); // отправка сообщения на сервер
+    };
+
+    const appendMessage = (message) => {
+      const chatBox = document.getElementById('chat-box');
+      const newMessage = document.createElement('div');
+      newMessage.textContent = message;
+      chatBox.appendChild(newMessage);
+    };
+
+    document.getElementById('send-message').addEventListener('click', sendMessage);
+
+    socket.on('newMessage', appendMessage); // отображение нового сообщения
+  </script>
+</body>
+</html>
